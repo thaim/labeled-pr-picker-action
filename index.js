@@ -8,17 +8,29 @@ async function run() {
   try {
     const context = github.context;
     const octokit = github.getOctokit(core.getInput('token'));
+    console.info(context);
 
     const labels = core.getMultilineInput('label-map');
     const pr = await octokit.rest.pulls.get({
       owner: context.repo.owner,
       repo: context.repo.repo,
-      pull_number: context.payload.pull_request.number
+      pull_number: context.payload.pull_request.number,
     });
 
     const branches = helper.match_branch(pr, labels);
 
     console.info(branches);
+    branches.forEach(branch => {
+      // const newPR = await octokit.pullRequests.create({
+      //   owner: context.repo.owner,
+      //   repo: context.repo.repo,
+      //   base: branch,
+      //   head: cherrypick,
+      //   title: context.payload.pull_request.title,
+      //   body: '',
+      // });
+      console.log(`create PR for ${branch}`);
+    });
   } catch (error) {
     core.setFailed(error.message);
   }
