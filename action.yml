@@ -1,13 +1,17 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: 'labeled PR picker'
+description: 'cheery-pick your labeled PR and create PR'
+author: 'thaim'
+branding:
+  icon: 'git-pull-request'
+  color: 'gray-dark'
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
+  token:
+    description: 'github token'
     required: true
-    default: '1000'
-outputs:
-  time: # output will be available to future steps
-    description: 'The message to output'
+    default: ${{ github.token }}
+  label-to-branch:
+    description: ''
+    required: true
 runs:
   using: 'node12'
   main: 'dist/index.js'
