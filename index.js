@@ -16,7 +16,8 @@ async function run() {
     }
 
     const labels = core.getMultilineInput('label-map');
-    const pulls = await octokit.request(`GET /repos/${context.payload.head_commit.url}/pulls`, {
+    console.log(`label-map: ${label-map}`);
+    const pr = await octokit.request(`GET /repos/${context.payload.head_commit.url}/pulls`, {
       owner: context.payload.repository.html_url.split('/')[0],
       repo: context.payload.repository.html_url.split('/')[1],
       commit_sha: context.sha,
