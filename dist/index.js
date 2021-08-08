@@ -11,7 +11,7 @@ const core = __nccwpck_require__(186);
 // most @actions toolkit packages have async methods
 async function run() {
   try {
-    const labels = core.getMultilineInput('labelmap').join(',');
+    const labels = core.getMultilineInput('label-map').join(',');
     core.info(`Labels: ${labels}`);
 
     core.info((new Date()).toTimeString());

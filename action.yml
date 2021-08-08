@@ -9,7 +9,7 @@ inputs:
     description: 'github token'
     required: true
     default: ${{ github.token }}
-  label-to-branch:
+  label-map:
     description: ''
     required: true
 runs:
