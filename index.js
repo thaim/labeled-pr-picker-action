@@ -16,11 +16,16 @@ async function run() {
     }
 
     const labels = core.getMultilineInput('label-map');
-    const pr = await octokit.rest.pulls.get({
-      owner: context.repo.owner,
-      repo: context.repo.repo,
-      pull_number: context.payload.pull_request.number,
-    });
+    const pulls = await octokit.request(`GET /repos/${context.payload.head_commit.url}/pulls`, {
+      owner: context.payload.repository.html_url.split('/')[0],
+      repo: context.payload.repository.html_url.split('/')[1],
+      commit_sha: context.sha,
+      mediaType: {
+        previews: [
+          'groot'
+        ]
+      }
+    })
 
     const branches = helper.match_branch(pr, labels);
 
