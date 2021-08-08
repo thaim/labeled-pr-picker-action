@@ -6,6 +6,7 @@ async function run() {
   try {
     const labels = core.getMultiline('label-to-branch').join(',');
     core.info(`Labels: ${labels}`);
+    console.log(`Labels: ${labels}`);
 
     core.info((new Date()).toTimeString());
   } catch (error) {
