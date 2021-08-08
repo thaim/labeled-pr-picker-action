@@ -18,7 +18,7 @@ async function run() {
 
     const branches = helper.match_branch(pr, labels);
 
-    core.info(branches);
+    console.info(branches);
   } catch (error) {
     core.setFailed(error.message);
   }
