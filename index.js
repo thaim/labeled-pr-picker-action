@@ -1,13 +1,24 @@
-const core = require('@actions/core');
+const helper = require('./helper.js');
 
+const core = require('@actions/core');
+const github = require('@actions/github');
 
 // most @actions toolkit packages have async methods
 async function run() {
   try {
-    const labels = core.getMultilineInput('label-map').join(',');
-    core.info(`Labels: ${labels}`);
+    const context = github.context;
+    const octokit = github.getOctokit(core.getInput('token'));
 
-    core.info((new Date()).toTimeString());
+    const labels = core.getMultilineInput('label-map');
+    const pr = await octokit.rest.pulls.get({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      pull_number: context.payload.pull_request.number
+    });
+
+    const branches = helper.match_branch(pr, labels);
+
+    core.info(branches);
   } catch (error) {
     core.setFailed(error.message);
   }
