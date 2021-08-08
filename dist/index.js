@@ -30,7 +30,12 @@ async function run() {
   try {
     const context = github.context;
     const octokit = github.getOctokit(core.getInput('token'));
-    console.info(context);
+
+    console.log(context);
+    if (context.payload.commits.length == 1) {
+      console.info('ignore push without merge PR');
+      process.exit(0);
+    }
 
     const labels = core.getMultilineInput('label-map');
     const pr = await octokit.rest.pulls.get({
