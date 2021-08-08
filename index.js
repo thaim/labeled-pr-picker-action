@@ -29,7 +29,7 @@ async function run() {
       }
     })
 
-    const branches = helper.match_branch(prs[0], labels);
+    const branches = await helper.match_branch(prs, labels);
 
     console.info(branches);
     branches.forEach(branch => {
