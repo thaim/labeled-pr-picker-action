@@ -15,10 +15,10 @@ async function run() {
       process.exit(0);
     }
 
-    const labels = core.getMultilineInput('label-map');
-    console.log(`label-map: ${labels}`);
+    const labelmaps = core.getMultilineInput('label-map');
+    console.log(`label-map: ${labelmaps}`);
     console.log(`request URL: /repos/${context.payload.repository.full_name}/commits/${context.sha}/pulls`)
-    const prs = await octokit.request(`GET /repos/${context.payload.repository.full_name}/commits/${context.sha}/pulls`, {
+    const resp = await JSON.parse(octokit.request(`GET /repos/${context.payload.repository.full_name}/commits/${context.sha}/pulls`, {
       owner: context.payload.repository.full_name.split('/')[0],
       repo: context.payload.repository.full_name.split('/')[1],
       commit_sha: context.sha,
@@ -27,9 +27,13 @@ async function run() {
           'groot'
         ]
       }
-    })
+    }));
+    if (resp["status"] != 200) {
+      console.error('error response from GitHub API: ' + JSON.stringify(resp));
+      process.exit(1);
+    }
 
-    const branches = await helper.match_branch(prs, labels);
+    const branches = await helper.match_branch(resp["data"][0], labelmaps);
 
     console.info(branches);
     branches.forEach(branch => {

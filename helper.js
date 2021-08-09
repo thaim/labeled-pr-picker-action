@@ -1,20 +1,46 @@
 const core = require('@actions/core')
 
 async function match_branch(prdata, labels) {
-  attached_labels = await parse_labels(prdata);
-  branches = label_to_branch(attached_labels, labels);
+  const attached_labels = await parse_labels(prdata);
+  const branches = await label_to_branch(attached_labels, labels);
 
-  return branches;
+  return Array.from(branches);
 }
 
 async function parse_labels(prdata) {
-  console.info('prdata: ' + JSON.stringify(prdata));
-  return ["hotfix"]
+  return prdata.labels || [];
 }
 
-async function label_to_branch(attached_labels, labels) {
-  console.info('labels: ' + JSON.stringify(labels));
-  return ["production"];
+async function label_to_branch(attached_labels, labelmaps) {
+  const branches = new Set();
+
+  const labelmap_format = new Map();
+  labelmaps.forEach(labelmap => {
+    const keyval = labelmap.split(':');
+    if (keyval.length != 2) {
+      console.warn('ignored unexpected label-map format: ' + labelmap);
+      return;
+    }
+
+    if (labelmap_format.has(keyval[0])) {
+      labelmap_format.get(keyval[0]).push(keyval[1]);
+    } else {
+      labelmap_format.set(keyval[0], [keyval[1]]);
+    }
+  });
+
+  attached_labels.forEach(label => {
+    const branch_list = labelmap_format.get(label);
+    if (branch_list === undefined) {
+      return;
+    }
+
+    branch_list.forEach(b => {
+      branches.add(b);
+    });
+  });
+
+  return branches;
 }
 
 
