@@ -1,5 +1,3 @@
-const core = require('@actions/core')
-
 async function match_branch(prdata, labels) {
   const attached_labels = await parse_labels(prdata);
   const branches = await label_to_branch(attached_labels, labels);
