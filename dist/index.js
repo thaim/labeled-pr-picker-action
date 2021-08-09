@@ -93,12 +93,12 @@ async function run() {
         ]
       }
     }));
-    if (resp["status"] != 200) {
+    if (resp.status != 200) {
       console.error('error response from GitHub API: ' + JSON.stringify(resp));
       process.exit(1);
     }
 
-    const branches = await helper.match_branch(resp["data"][0], labelmaps);
+    const branches = await helper.match_branch(resp.data[0], labelmaps);
 
     console.info(branches);
     branches.forEach(branch => {
