@@ -28,6 +28,7 @@ async function run() {
         ]
       }
     }));
+    console.log('GitHub API PR response: ' + resp);
     if (resp.status != 200) {
       console.error('error response from GitHub API: ' + JSON.stringify(resp));
       process.exit(1);
