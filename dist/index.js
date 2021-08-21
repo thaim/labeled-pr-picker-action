@@ -1,5 +1,4 @@
-require('./sourcemap-register.js');module.exports =
-/******/ (() => { // webpackBootstrap
+require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 263:
@@ -54,70 +53,6 @@ module.exports = {
   match_branch,
   label_to_branch
 }
-
-
-/***/ }),
-
-/***/ 932:
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __nccwpck_require__) => {
-
-const helper = __nccwpck_require__(263);
-
-const core = __nccwpck_require__(186);
-const github = __nccwpck_require__(438);
-
-// most @actions toolkit packages have async methods
-async function run() {
-  try {
-    const context = github.context;
-    const octokit = github.getOctokit(core.getInput('token'));
-
-    console.log(context);
-    if (context.payload.commits.length == 1) {
-      console.info('ignore push without merge PR');
-      process.exit(0);
-    }
-
-    const labelmaps = core.getMultilineInput('label-map');
-    console.log(`label-map: ${labelmaps}`);
-    console.log(`request URL: /repos/${context.payload.repository.full_name}/commits/${context.sha}/pulls`)
-    const resp = await octokit.request(`GET /repos/${context.payload.repository.full_name}/commits/${context.sha}/pulls`, {
-      owner: context.payload.repository.full_name.split('/')[0],
-      repo: context.payload.repository.full_name.split('/')[1],
-      commit_sha: context.sha,
-      mediaType: {
-        previews: [
-          'groot'
-        ]
-      }
-    });
-    console.log('GitHub API PR response: ' + resp);
-    const pulls = JSON.parse(resp);
-    if (pulls.status != 200) {
-      console.error('error response from GitHub API: ' + pulls);
-      process.exit(1);
-    }
-
-    const branches = await helper.match_branch(pulls.data[0], labelmaps);
-
-    console.info(branches);
-    branches.forEach(branch => {
-      // const newPR = await octokit.pullRequests.create({
-      //   owner: context.repo.owner,
-      //   repo: context.repo.repo,
-      //   base: branch,
-      //   head: cherrypick,
-      //   title: context.payload.pull_request.title,
-      //   body: '',
-      // });
-      console.log(`create PR for ${branch}`);
-    });
-  } catch (error) {
-    core.setFailed(error.message);
-  }
-}
-
-run();
 
 
 /***/ }),
@@ -6293,7 +6228,7 @@ module.exports = eval("require")("encoding");
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("assert");;
+module.exports = require("assert");
 
 /***/ }),
 
@@ -6301,7 +6236,7 @@ module.exports = require("assert");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("events");;
+module.exports = require("events");
 
 /***/ }),
 
@@ -6309,7 +6244,7 @@ module.exports = require("events");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("fs");;
+module.exports = require("fs");
 
 /***/ }),
 
@@ -6317,7 +6252,7 @@ module.exports = require("fs");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("http");;
+module.exports = require("http");
 
 /***/ }),
 
@@ -6325,7 +6260,7 @@ module.exports = require("http");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("https");;
+module.exports = require("https");
 
 /***/ }),
 
@@ -6333,7 +6268,7 @@ module.exports = require("https");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("net");;
+module.exports = require("net");
 
 /***/ }),
 
@@ -6341,7 +6276,7 @@ module.exports = require("net");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("os");;
+module.exports = require("os");
 
 /***/ }),
 
@@ -6349,7 +6284,7 @@ module.exports = require("os");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("path");;
+module.exports = require("path");
 
 /***/ }),
 
@@ -6357,7 +6292,7 @@ module.exports = require("path");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("stream");;
+module.exports = require("stream");
 
 /***/ }),
 
@@ -6365,7 +6300,7 @@ module.exports = require("stream");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("tls");;
+module.exports = require("tls");
 
 /***/ }),
 
@@ -6373,7 +6308,7 @@ module.exports = require("tls");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("url");;
+module.exports = require("url");
 
 /***/ }),
 
@@ -6381,7 +6316,7 @@ module.exports = require("url");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("util");;
+module.exports = require("util");
 
 /***/ }),
 
@@ -6389,7 +6324,7 @@ module.exports = require("util");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("zlib");;
+module.exports = require("zlib");
 
 /***/ })
 
@@ -6401,8 +6336,9 @@ module.exports = require("zlib");;
 /******/ 	// The require function
 /******/ 	function __nccwpck_require__(moduleId) {
 /******/ 		// Check if module is in cache
-/******/ 		if(__webpack_module_cache__[moduleId]) {
-/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
@@ -6427,11 +6363,73 @@ module.exports = require("zlib");;
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat */
 /******/ 	
-/******/ 	__nccwpck_require__.ab = __dirname + "/";/************************************************************************/
-/******/ 	// module exports must be returned from runtime so entry inlining is disabled
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	return __nccwpck_require__(932);
+/******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
+const helper = __nccwpck_require__(263);
+
+const core = __nccwpck_require__(186);
+const github = __nccwpck_require__(438);
+
+// most @actions toolkit packages have async methods
+async function run() {
+  try {
+    const context = github.context;
+    const octokit = github.getOctokit(core.getInput('token'));
+
+    console.log(context);
+    if (context.payload.commits.length == 1) {
+      console.info('ignore push without merge PR');
+      process.exit(0);
+    }
+
+    const labelmaps = core.getMultilineInput('label-map');
+    console.log(`label-map: ${labelmaps}`);
+    console.log(`request URL: /repos/${context.payload.repository.full_name}/commits/${context.sha}/pulls`)
+    const resp = await octokit.request(`GET /repos/${context.payload.repository.full_name}/commits/${context.sha}/pulls`, {
+      owner: context.payload.repository.full_name.split('/')[0],
+      repo: context.payload.repository.full_name.split('/')[1],
+      commit_sha: context.sha,
+      mediaType: {
+        previews: [
+          'groot'
+        ]
+      }
+    });
+    console.log('GitHub API PR response: ' + resp);
+    const pulls = JSON.parse(resp);
+    if (pulls.status != 200) {
+      console.error('error response from GitHub API: ' + pulls);
+      process.exit(1);
+    }
+
+    const branches = await helper.match_branch(pulls.data[0], labelmaps);
+
+    console.info(branches);
+    branches.forEach(branch => {
+      // const newPR = await octokit.pullRequests.create({
+      //   owner: context.repo.owner,
+      //   repo: context.repo.repo,
+      //   base: branch,
+      //   head: cherrypick,
+      //   title: context.payload.pull_request.title,
+      //   body: '',
+      // });
+      console.log(`create PR for ${branch}`);
+    });
+  } catch (error) {
+    core.setFailed(error.message);
+  }
+}
+
+run();
+
+})();
+
+module.exports = __webpack_exports__;
 /******/ })()
 ;
 //# sourceMappingURL=index.js.map
