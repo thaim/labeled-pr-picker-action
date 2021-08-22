@@ -28,12 +28,12 @@ async function run() {
         ]
       }
     });
-    console.log('GitHub API PR response: ' + JSON.stringify(resp));
-    const pulls = resp.data[0]
+    console.debug('GitHub API PR response: ' + JSON.stringify(resp));
     if (resp.status != 200) {
-      console.error('error response from GitHub API: ' + pulls);
+      console.error(`error response from GitHub API: ${resp.status}`);
       process.exit(1);
     }
+    const pulls = resp.data[0]
 
     const branches = await helper.match_branch(pulls, labelmaps);
 
