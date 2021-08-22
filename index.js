@@ -29,13 +29,13 @@ async function run() {
       }
     });
     console.log('GitHub API PR response: ' + JSON.stringify(resp));
-    const pulls = JSON.parse(resp);
-    if (pulls.status != 200) {
+    const pulls = resp.data[0]
+    if (resp.status != 200) {
       console.error('error response from GitHub API: ' + pulls);
       process.exit(1);
     }
 
-    const branches = await helper.match_branch(pulls.data[0], labelmaps);
+    const branches = await helper.match_branch(pulls, labelmaps);
 
     console.info(branches);
     branches.forEach(branch => {
