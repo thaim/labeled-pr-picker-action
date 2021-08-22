@@ -72,6 +72,13 @@ describe('parse_labels', () => {
     expect(actual.length).toEqual(0);
   });
 
+  it('return empty array from missing labels attribute', async () => {
+    const prdata = { };
+    const actual = await sut.parse_labels(prdata);
+
+    expect(actual.length).toEqual(0);
+  });
+
   it('return multiple labels', async () => {
     const prdata = {'labels': [
       { 'name': 'docs' },
