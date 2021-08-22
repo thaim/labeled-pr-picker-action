@@ -6399,7 +6399,7 @@ async function run() {
         ]
       }
     });
-    console.log('GitHub API PR response: ' + resp);
+    console.log('GitHub API PR response: ' + JSON.stringify(resp));
     const pulls = JSON.parse(resp);
     if (pulls.status != 200) {
       console.error('error response from GitHub API: ' + pulls);
