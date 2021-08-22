@@ -6,7 +6,7 @@ async function match_branch(prdata, labels) {
 }
 
 async function parse_labels(prdata) {
-  return prdata.labels || [];
+  return prdata.labels.map((obj) => obj.name) || [];
 }
 
 async function label_to_branch(attached_labels, labelmaps) {

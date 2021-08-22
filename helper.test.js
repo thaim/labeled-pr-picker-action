@@ -2,7 +2,7 @@ const sut = require('./helper.js');
 
 describe('match_branch', () => {
   it('match simple map', async () => {
-    const prdata = {'labels': ['hotfix']};
+    const prdata = {'labels': [{'name':'hotfix'}]};
     const labels = ['hotfix:production'];
     const actual = await sut.match_branch(prdata, labels);
 
@@ -11,7 +11,7 @@ describe('match_branch', () => {
   });
 
   it('match single branch from multiple map', async () => {
-    const prdata = {'labels': ['release']};
+    const prdata = {'labels': [{'name': 'release'}]};
     const labels = ['hotfix:production','release:staging'];
     const actual = await sut.match_branch(prdata, labels);
 
@@ -20,7 +20,7 @@ describe('match_branch', () => {
   });
 
   it('match nothing from mismatched label', async () => {
-    const prdata = {'labels': ['release']};
+    const prdata = {'labels': [{'name':'release'}]};
     const labels = ['hotfix:production','doc:staging'];
     const actual = await sut.match_branch(prdata, labels);
 
@@ -28,7 +28,7 @@ describe('match_branch', () => {
   });
 
   it('match nothing from empty attached label', async () => {
-    const prdata = {};
+    const prdata = {'labels': []};
     const labels = ['hotfix:production','doc:staging'];
     const actual = await sut.match_branch(prdata, labels);
 
@@ -36,7 +36,7 @@ describe('match_branch', () => {
   });
 
   it('match multiple branches from single attached label', async () => {
-    const prdata = {'labels': ['hotfix']};
+    const prdata = {'labels': [{'name': 'hotfix'}]};
     const labels = ['hotfix:production','hotfix:staging'];
     const actual = await sut.match_branch(prdata, labels);
 
@@ -45,7 +45,7 @@ describe('match_branch', () => {
   });
 
   it('match multiple branches from multiple attached label', async () => {
-    const prdata = {'labels': ['hotfix', 'release']};
+    const prdata = {'labels': [{'name': 'hotfix'}, {'name': 'release'}]};
     const labels = ['hotfix:production', 'release:production', 'release:staging'];
     const actual = await sut.match_branch(prdata, labels);
 
@@ -56,7 +56,9 @@ describe('match_branch', () => {
 
 describe('parse_labels', () => {
   it('return single label with array', async () => {
-    const prdata = {'labels': ['hotfix']};
+    const prdata = {'labels': [
+      { 'name': 'hotfix' }
+    ]};
     const actual = await sut.parse_labels(prdata);
 
     expect(actual.length).toEqual(1);
@@ -64,14 +66,17 @@ describe('parse_labels', () => {
   });
 
   it('return empty array from no label data', async () => {
-    const prdata = {};
+    const prdata = { 'labels': [] };
     const actual = await sut.parse_labels(prdata);
 
     expect(actual.length).toEqual(0);
   });
 
   it('return multiple labels', async () => {
-    const prdata = {'labels': ['docs', 'hotfix']};
+    const prdata = {'labels': [
+      { 'name': 'docs' },
+      { 'name': 'hotfix' }
+    ]};
     const actual = await sut.parse_labels(prdata);
 
     expect(actual.length).toEqual(2);
