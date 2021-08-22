@@ -12,7 +12,7 @@ async function match_branch(prdata, labels) {
 }
 
 async function parse_labels(prdata) {
-  return prdata.labels || [];
+  return prdata.labels.map((obj) => obj.name) || [];
 }
 
 async function label_to_branch(attached_labels, labelmaps) {
@@ -6399,14 +6399,14 @@ async function run() {
         ]
       }
     });
-    console.log('GitHub API PR response: ' + JSON.stringify(resp));
-    const pulls = JSON.parse(resp);
-    if (pulls.status != 200) {
-      console.error('error response from GitHub API: ' + pulls);
+    console.debug('GitHub API PR response: ' + JSON.stringify(resp));
+    if (resp.status != 200) {
+      console.error(`error response from GitHub API: ${resp.status}`);
       process.exit(1);
     }
+    const pulls = resp.data[0]
 
-    const branches = await helper.match_branch(pulls.data[0], labelmaps);
+    const branches = await helper.match_branch(pulls, labelmaps);
 
     console.info(branches);
     branches.forEach(branch => {
